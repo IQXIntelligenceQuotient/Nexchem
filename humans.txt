@@ -1,0 +1,4 @@
+Nexchem
+Company profiles: Industrial Solution Leaders and Lahore Chemical House
+Contact: https://nexchem.pk/contact.html
+Developer note: Static HTML pages with shared CSS and progressively enhanced JavaScript.

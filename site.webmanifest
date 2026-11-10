@@ -1,0 +1,15 @@
+{
+  "name": "Nexchem",
+  "short_name": "Nexchem",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#061b49",
+  "icons": [
+    {
+      "src": "/assets/img/favicon.png",
+      "sizes": "2000x2000",
+      "type": "image/png"
+    }
+  ]
+}

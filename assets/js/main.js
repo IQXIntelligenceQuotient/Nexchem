@@ -15,36 +15,71 @@
     $(document).ready(function () {
 
         /* ======= Header ======= */
-        var primaryHeader = $('.primary-header'),
-            headerClone = primaryHeader.clone();
-        $('.header').after('<div class="sticky-header"></div>');
-        $('.sticky-header').html(headerClone);
-        var headerSelector = document.querySelector(".sticky-header");
-        var headroom = new Headroom(headerSelector, {
-            offset: 100
-        });
-        headroom.init();
-        if ($('.primary-header').length) {
-            $('.header .primary-header .burger-menu').on("click", function () {
-                $(this).toggleClass('menu-open');
-                $('.header .header-menu-wrap').slideToggle(300);
+        var mobileHeader = window.matchMedia('(max-width: 992px)');
+        $('.primary-header').each(function (index) {
+            var header = $(this);
+            var menu = header.find('.header-menu-wrap');
+            var toggle = header.find('.burger-menu');
+            var menuId = 'site-navigation-' + index;
+            var menuPosition = document.createComment('Site navigation position');
+            var drawer = document.createElement('dialog');
+            drawer.className = 'site-menu-drawer';
+            drawer.id = 'site-menu-drawer-' + index;
+            drawer.setAttribute('aria-label', 'Main navigation');
+            drawer.innerHTML = '<div class="site-menu-drawer-content"><div class="site-menu-drawer-heading"><strong>Menu</strong><button type="button" class="site-menu-drawer-close" aria-label="Close navigation" autofocus>&times;</button></div></div>';
+            var drawerContent = drawer.firstElementChild;
+            var brochure = header.find('.header-btn').first().clone().removeClass('header-btn').addClass('site-menu-brochure');
+            menu.before(menuPosition);
+            header.append(drawer);
+            menu.attr('id', menuId);
+            toggle.attr({ 'aria-controls': drawer.id, 'aria-haspopup': 'dialog' });
+
+            function setMenu(open) {
+                toggle.toggleClass('menu-open', open).attr('aria-expanded', String(open));
+                menu.toggleClass('menu-visible', open);
+                if (open) {
+                    $(drawerContent).append(menu, brochure);
+                    document.documentElement.classList.add('site-menu-open');
+                    drawer.showModal();
+                    drawer.scrollTop = 0;
+                } else {
+                    if (drawer.open) drawer.close();
+                    if (drawerContent.contains(menu[0])) menu.insertAfter(menuPosition);
+                    document.documentElement.classList.remove('site-menu-open');
+                    menu.find('.dropdown-open').removeClass('dropdown-open');
+                    menu.find('.dropdown-plus').attr('aria-expanded', 'false');
+                }
+            }
+
+            toggle.on('click', function () {
+                if (mobileHeader.matches) setMenu(!drawer.open);
             });
-
-            $('.sticky-header .primary-header .burger-menu').on("click", function () {
-                $(this).toggleClass('menu-open');
-                $('.sticky-header .header-menu-wrap').slideToggle(300);
+            drawer.querySelector('.site-menu-drawer-close').addEventListener('click', function () { setMenu(false); });
+            drawer.addEventListener('click', function (event) {
+                if (event.target === drawer) setMenu(false);
             });
-        }
-
-        $('.header-menu-wrap ul li:has(ul)').each(function () {
-            $(this).append('<span class="dropdown-plus"></span>');
-            $(this).addClass('dropdown_menu');
-        });
-
-        $('.header-menu-wrap .dropdown-plus').on("click", function () {
-            $(this).prev('ul').slideToggle(300);
-            $(this, ).toggleClass('dropdown-open');
-            $('.header-menu-wrap ul li:has(ul)').toggleClass('dropdown-open');
+            drawer.addEventListener('cancel', function (event) {
+                event.preventDefault();
+                setMenu(false);
+            });
+            menu.on('click', 'a', function () {
+                if (drawer.open) setMenu(false);
+            });
+            menu.find('li').has('> ul').each(function (itemIndex) {
+                var item = $(this);
+                var label = item.children('a').first().text().trim();
+                var submenuId = menuId + '-' + itemIndex;
+                item.addClass('dropdown_menu').children('ul').attr('id', submenuId);
+                $('<button type="button" class="dropdown-plus"></button>')
+                    .attr({ 'aria-controls': submenuId, 'aria-expanded': 'false', 'aria-label': label + ' submenu' })
+                    .appendTo(item)
+                    .on('click', function () {
+                        var open = !item.hasClass('dropdown-open');
+                        item.toggleClass('dropdown-open', open);
+                        $(this).attr('aria-expanded', String(open));
+                    });
+            });
+            mobileHeader.addEventListener('change', function () { setMenu(false); });
         });
 
         $('.header-menu-wrap .dropdown_menu a').append('<span></span>');
@@ -61,25 +96,9 @@
             }
         }
 
-        // Transparent Header
-        function transparentHeader() {
-            if ($('body').hasClass('header-3')) {
-                var stickyHeader = $('.header-3 .header .header-logo'),
-                    stickyHeaderLogo = stickyHeader.data('sticky-logo');
-                if ('' != stickyHeaderLogo) {
-                    $(".header-3 .sticky-header .header-logo img").attr('src', stickyHeaderLogo);
-                }
-            }
-            var header = $('.header.header-three'),
-                headerHeight = header.height(),
-                pageHeader = $('.page-header');
-            pageHeader.css('padding-top', headerHeight + 'px');
-        }
-
         //responsiveClasses();
         $(window).on("resize", function () {
             responsiveClasses();
-            transparentHeader();
         }).resize();
 
         /* ========== Popup Search Box ========== */
@@ -147,41 +166,29 @@
             return false;
         });
 
-        /* ======= Main Slider ======= */
-        $(document).ready(function () {
+        /* ======= Homepage carousel ======= */
+        var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            $('#main-slider').on('init', function (e, slick) {
-                var $firstAnimatingElements = $('div.single-slide:first-child').find('[data-animation]');
-                doAnimations($firstAnimatingElements);
-            });
-            $('#main-slider').on('beforeChange', function (e, slick, currentSlide, nextSlide) {
-                var $animatingElements = $('div.single-slide[data-slick-index="' + nextSlide + '"]').find('[data-animation]');
-                doAnimations($animatingElements);
-            });
-            $('#main-slider').slick({
-                autoplay: true,
-                autoplaySpeed: 10000,
-                dots: true,
-                fade: true,
-                prevArrow: '<div class="slick-prev"><i class="fa fa-chevron-left"></i></div>',
-                nextArrow: '<div class="slick-next"><i class="fa fa-chevron-right"></i></div>'
-            });
+        function startCarousel(selector, options) {
+            var carousel = $(selector);
+            if (!carousel.length) return;
 
-            function doAnimations(elements) {
-                var animationEndEvents = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-                elements.each(function () {
-                    var $this = $(this);
-                    var $animationDelay = $this.data('delay');
-                    var $animationType = 'animated ' + $this.data('animation');
-                    $this.css({
-                        'animation-delay': $animationDelay,
-                        '-webkit-animation-delay': $animationDelay
-                    });
-                    $this.addClass($animationType).one(animationEndEvents, function () {
-                        $this.removeClass($animationType);
-                    });
-                });
-            }
+            carousel.slick($.extend({
+                autoplay: !reduceMotion,
+                autoplaySpeed: 3000,
+                speed: reduceMotion ? 0 : 300,
+                pauseOnHover: true,
+                pauseOnFocus: true
+            }, options));
+
+        }
+
+        startCarousel('#main-slider', {
+            autoplaySpeed: 2500,
+            dots: true,
+            fade: true,
+            prevArrow: '<button type="button" class="slick-prev" aria-label="Previous product slide"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>',
+            nextArrow: '<button type="button" class="slick-next" aria-label="Next product slide"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>'
         });
 
         /* ======= Button Effect ======= */
@@ -391,13 +398,11 @@
 
         /* ======= Sponsor ======= */
         $('.sponsor-carousel').slick({
-            dots: true,
-            infinite: false,
             speed: 300,
             slidesToShow: 6,
             slidesToScroll: 1,
-            prevArrow: '<i class="fa fa-chevron-left left"></i>',
-            nextArrow: '<i class="fa fa-chevron-right right"></i>',
+            prevArrow: '<button type="button" class="left" aria-label="Previous logos"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>',
+            nextArrow: '<button type="button" class="right" aria-label="Next logos"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>',
             infinite: true,
             dots: false,
             pauseOnFocus: false,

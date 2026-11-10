@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /test/
+Disallow: /staging/
+Disallow: /drafts/
+
+Sitemap: https://nexchem.pk/sitemap-index.xml
+Sitemap: https://nexchem.pk/sitemap.xml
+Sitemap: https://nexchem.pk/image-sitemap.xml
