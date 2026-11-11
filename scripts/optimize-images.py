@@ -45,7 +45,8 @@ for original in sorted(references):
             limit = 64
         image.thumbnail((limit, limit))
         output = BytesIO()
-        image.save(output, "WEBP", quality=80, method=6)
+        quality = 60 if original.name in {"dl-slider-3.jpg", "dl-slider-4.jpg"} else 80
+        image.save(output, "WEBP", quality=quality, method=6)
         content = output.getvalue()
         slug = re.sub(r"[^a-z0-9]+", "-", original.stem.lower()).strip("-")
         asset = destination / f"{slug}-{sha256(content).hexdigest()[:10]}.webp"

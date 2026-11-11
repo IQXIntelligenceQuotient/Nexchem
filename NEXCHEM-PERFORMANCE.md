@@ -54,3 +54,11 @@ The build uses pinned npm exec tools and requires Node/npm. Edit original CSS/JS
 6. Run mobile and desktop PageSpeed Insights against https://nexchem.pk/ and representative product pages. Keep the production reports for comparison.
 
 Better Design automated review was unavailable because its monthly quota was exhausted; browser layout checks were used instead.
+
+## Follow-up: image delivery audit
+
+Responsive WebP variants now serve the two later hero slides, homepage product thumbnails and LCH logo. Slider images use Slick data-srcset/data-sizes; regular thumbnails use native srcset/sizes. Desktop variants and 2x thumbnail/logo variants preserve sharpness. The build regenerates these through scripts/responsive-images.py.
+
+At a 390px viewport and device pixel ratio 1, the six flagged images total 30,814 bytes (30.1 KiB), compared with 172.7 KiB reported by the supplied live audit, about 83% less. Slider 3 is 13,734 bytes; slider 4 is 10,628 bytes. Higher density or desktop browsers choose larger variants as appropriate. Browser checks at 390px and 1440px verified currentSrc selection, both slider images, no JavaScript errors and no horizontal overflow. The previous Lighthouse scores above were measured before this follow-up; new production scores are not yet measured.
+
+The reported bfcache failures explicitly come from Chrome flags/command-line configuration and are not actionable website fixes. Retest with a normal browser profile if checking back/forward caching.

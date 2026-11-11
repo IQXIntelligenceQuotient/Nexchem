@@ -7,6 +7,7 @@ import re
 
 
 root = Path(__file__).resolve().parent.parent
+subprocess.run([shutil.which("python") or "python", "scripts/responsive-images.py"], cwd=root, check=True)
 npm = shutil.which("npm.cmd") or shutil.which("npm")
 if not npm:
     raise SystemExit("Install Node.js/npm to build the shared assets.")
