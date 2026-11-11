@@ -34,7 +34,7 @@
     @ThemeEaster
     ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Poppins:wght@500;600;700&family=Work+Sans:wght@600&display=swap');
+
 
 /*  ======= 1.0 Common Styles ======= */
 * {
@@ -106,6 +106,7 @@ h6 {
 }
 
 img {
+    height: auto;
     border: none;
     outline: none;
     max-width: 100%;
@@ -1496,7 +1497,7 @@ button {
 }
 
 .box-inner-wrap:hover {
-    cursor: url(../img/cross.png), auto;
+    cursor: url(../img/optimized/cross-6c738c932d.webp), auto;
 }
 
 #dl-popup-search-box.toggled {
@@ -1600,7 +1601,7 @@ button {
 }
 
 .page-header {
-    background-image: url(../img/page-header.jpg);
+    background-image: url(../img/optimized/page-header-48f47b9f14.webp);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -1733,7 +1734,7 @@ button {
 
 /*  ======= Page Header 2 ======= */
 .page-header-2 {
-    background-image: url(../img/project-6.jpg);
+    background-image: url(../img/optimized/project-6-44e6b5589d.webp);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -1799,7 +1800,7 @@ button {
     4.0 Hero Section
 =============================================== */
 .hero-section {
-    background-image: url(../img/hero-bg-1.jpg);
+    background-image: url(../img/optimized/hero-bg-1-e03d74eb96.webp);
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -2131,7 +2132,7 @@ button {
 
 .service-bg {
     position: absolute;
-    background-image: url(../img/satellite-map.png);
+    background-image: url(../img/optimized/satellite-map-0f070bab7c.webp);
     background-position: top center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -2316,18 +2317,18 @@ button {
 }
 
 .arrow.arrow-up {
-    background-image: url(../img/arrow-up.png);
+    background-image: url(../img/optimized/arrow-up-0b24730a58.webp);
 }
 
 .arrow.arrow-down {
-    background-image: url(../img/arrow-down.png);
+    background-image: url(../img/optimized/arrow-down-404d8bd136.webp);
 }
 
 /*===============================================
     8.0 Features Section
 =============================================== */
 .feature-section {
-    background-image: url(../img/dl-content-1.jpg);
+    background-image: url(../img/optimized/dl-content-1-a4f67dc4ac.webp);
     background-position: left center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -2579,7 +2580,7 @@ button {
     10.0 CTA Section
 =============================================== */
 .cta-section {
-    background-image: url(../img/dl-cta-background.jpg);
+    background-image: url(../img/optimized/dl-cta-background-0bbb0368e1.webp);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2597,7 +2598,7 @@ button {
 
 /*===== CTA 2 =====*/
 .cta-section-2 {
-    background-image: url(../img/cta-bg.jpg);
+    background-image: url(../img/optimized/cta-bg-d779001ab9.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2615,7 +2616,7 @@ button {
 
 /*===== CTA 3 =====*/
 .cta-section-3 {
-    background-image: url(../img/cta-bg-2.jpg);
+    background-image: url(../img/optimized/cta-bg-2-de44d085bf.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2634,7 +2635,7 @@ button {
 
 /*===== CTA 4 =====*/
 .cta-section-4 {
-    background-image: url(../img/cta-background-4.jpg);
+    background-image: url(../img/optimized/cta-background-4-de44d085bf.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2699,7 +2700,7 @@ button {
 
 /*======  Counter 2 ======*/
 .counter-section-2 {
-    background-image: url(../img/counter-bg.jpg);
+    background-image: url(../img/optimized/counter-bg-031eaf9f4b.webp);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -2752,7 +2753,7 @@ button {
     12.0 Skills Section
 =============================================== */
 .skills-section {
-    background-image: url(../img/skill-bg.jpg);
+    background-image: url(../img/optimized/skill-bg-a4f67dc4ac.webp);
     background-position: left center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -3702,7 +3703,7 @@ blockquote span {
 
 .testimonials-section .testi-map {
     position: absolute;
-    background-image: url(../img/satellite-map.png);
+    background-image: url(../img/optimized/satellite-map-0f070bab7c.webp);
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -3796,7 +3797,7 @@ blockquote span {
 
 .testimonials-section-2 .testi-map {
     position: absolute;
-    background-image: url(../img/satellite-map.png);
+    background-image: url(../img/optimized/satellite-map-0f070bab7c.webp);
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -3836,7 +3837,7 @@ blockquote span {
 
 .testimonials-section-3 .testi-map {
     position: absolute;
-    background-image: url(../img/satellite-map.png);
+    background-image: url(../img/optimized/satellite-map-0f070bab7c.webp);
     background-position: top center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -3873,6 +3874,23 @@ blockquote span {
     padding-inline: 44px;
 }
 
+.sponsor-carousel:not(.slick-initialized) {
+    display: flex;
+    overflow: hidden;
+    height: 76px;
+}
+
+.sponsor-carousel:not(.slick-initialized) .sponsor-item { flex: 0 0 16.6667%; }
+@media (max-width: 991px) {
+    .sponsor-carousel:not(.slick-initialized) .sponsor-item { flex-basis: 25%; }
+}
+@media (max-width: 766px) {
+    .sponsor-carousel:not(.slick-initialized) .sponsor-item { flex-basis: 100%; }
+}
+@media (max-width: 579px) {
+    .sponsor-carousel:not(.slick-initialized) .sponsor-item { flex-basis: 50%; }
+}
+
 .sponsor-carousel .slick-arrow {
     background: transparent;
     border: 0;
@@ -3903,7 +3921,7 @@ blockquote span {
 
 .widget-section .widget-bg {
     position: absolute;
-    background-image: url(../img/footer-bg.png);
+    background-image: url(../img/optimized/footer-bg-0c2f72ca34.webp);
     background-position: center center;
     background-size: contain;
     background-repeat: no-repeat;
@@ -4099,7 +4117,7 @@ blockquote span {
    20.0 Quote Section
    ========================================================================== */
 .quote-section {
-    background-image: url(../img/quote-bg.jpg);
+    background-image: url(../img/optimized/quote-bg-031eaf9f4b.webp);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -4276,7 +4294,7 @@ blockquote span {
    ========================================================================== */
 .award-section {
     color: #f9f9f9;
-    background-image: url(../img/satellite-map.png);
+    background-image: url(../img/optimized/satellite-map-0f070bab7c.webp);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;

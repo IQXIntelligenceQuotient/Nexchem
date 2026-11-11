@@ -184,6 +184,7 @@
         }
 
         startCarousel('#main-slider', {
+            lazyLoad: 'ondemand',
             autoplaySpeed: 2500,
             dots: true,
             fade: true,
@@ -224,32 +225,6 @@
             }
         );
 
-        /* ======= ISOTOP Active ======= */
-        $('.project-items').imagesLoaded(function () {
-
-            // Add isotope click function
-            $('.project-filter li').on('click', function () {
-                $(".project-filter li").removeClass("active");
-                $(this).addClass("active");
-
-                var selector = $(this).attr('data-filter');
-                $(".project-items").isotope({
-                    filter: selector,
-                    animationOptions: {
-                        duration: 750,
-                        easing: 'linear',
-                        queue: false,
-                    }
-                });
-                return false;
-            });
-
-            $(".project-items").isotope({
-                itemSelector: '.single-item',
-                layoutMode: 'masonry',
-            });
-        });
-        
         /* ======= CurrentYear ======= */
         var currentYear = new Date().getFullYear();
         $('#currentYear').append(currentYear);
@@ -257,9 +232,7 @@
         /* ======= WOW Active ======= */
         new WOW().init();
 
-        /* ======= Venobox Active ======= */
 
-        $('.venobox').venobox();
 
         /* ======= Testimonials ======= */
         $('.testimonials-carousel').slick({
@@ -397,7 +370,8 @@
         });
 
         /* ======= Sponsor ======= */
-        $('.sponsor-carousel').slick({
+        function startSponsorCarousel(element) {
+            $(element).slick({
             speed: 300,
             slidesToShow: 6,
             slidesToScroll: 1,
@@ -438,6 +412,19 @@
             }
         ]
         });
+        }
+        if ('IntersectionObserver' in window) {
+            var sponsorObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (!entry.isIntersecting) return;
+                    sponsorObserver.unobserve(entry.target);
+                    startSponsorCarousel(entry.target);
+                });
+            }, { rootMargin: '250px' });
+            $('.sponsor-carousel').each(function () { sponsorObserver.observe(this); });
+        } else {
+            $('.sponsor-carousel').each(function () { startSponsorCarousel(this); });
+        }
 
         /* ======= Project ======= */
         $('.project-carousel').slick({

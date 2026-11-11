@@ -1,0 +1,56 @@
+# Nexchem performance improvements
+
+Existing static HTML, page layouts and conversion paths are retained. No React conversion.
+
+## Measured results
+
+Lighthouse on local Chrome with mobile/desktop presets, identical gzip server configuration for before and after. These are lab runs, not production PageSpeed Insights results.
+
+| Test | Performance | LCP |
+| --- | --- | --- |
+| Mobile before | 51 | 11.6 s |
+| Mobile after | 93 | 3.1 s |
+| Desktop after | 100 | 0.7 s |
+
+Mobile is not 100. Hosting, CDN compression, device conditions and third-party content can affect production results. Re-run PageSpeed Insights after deploying the entire package.
+
+## Changes
+
+- 76 referenced image assets converted or recompressed to hashed WebP files: 5,586,564 to 1,725,490 bytes (69.1% smaller). Already small WebP files retained. Originals retained for editing.
+- Below-fold images lazy load with intrinsic dimensions. First hero image is prioritised; later slides load on demand.
+- Exact existing font families self-hosted as WOFF2 with font-display swap. Icon fonts subset to used icons.
+- Shared CSS reduced from about 391 KB to 63 KB; filtered CSS embedded per page to remove stylesheet network blocking.
+- Core JavaScript bundled/minified, unused plugins removed, scripts deferred. Bootstrap JS retained only on the FAQ page that needs collapse.
+- Sponsor carousels initialise near the viewport; their static fallback retains a horizontal row.
+- .htaccess enables compression and asset caching where supported. HTML revalidates; changed external assets use versioned URLs.
+
+## Maintenance
+
+Install Python dependencies once:
+
+    python -m pip install -r scripts/requirements-performance.txt
+
+After adding or replacing images:
+
+    python scripts/optimize-images.py
+
+After introducing icons or changing fonts:
+
+    python scripts/optimize-fonts.py
+
+After changing CSS, JavaScript or HTML:
+
+    python scripts/build-assets.py
+
+The build uses pinned npm exec tools and requires Node/npm. Edit original CSS/JS files, then rebuild; generated bundles and embedded styles are replaced. Image and font source files remain available.
+
+## Deployment and verification
+
+1. Back up the current hosting files.
+2. Upload all HTML, assets, .htaccess and root SEO files together. Uploading only HTML will break references to new assets.
+3. Purge hosting/CDN caches once after upload.
+4. Confirm HTML revalidation, gzip/Brotli and long-lived caching for versioned static assets on the actual host.
+5. Test hero/sponsor sliders, mobile drawer, solvent pop-ups, FAQ and quote/contact forms. Review WhatsApp drafts before sending.
+6. Run mobile and desktop PageSpeed Insights against https://nexchem.pk/ and representative product pages. Keep the production reports for comparison.
+
+Better Design automated review was unavailable because its monthly quota was exhausted; browser layout checks were used instead.

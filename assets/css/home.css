@@ -25,6 +25,17 @@
     display: none;
 }
 
+#main-slider .bg-img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#main-slider:not(.slick-initialized) .single-slide:not(:first-child) {
+    display: none;
+}
+
 #main-slider .slider-content-wrap {
     position: relative;
     z-index: 1;
@@ -413,12 +424,12 @@
 }
 
 .home-solutions-photo {
-    background-image: url('../img/home-factory-distribution.webp');
+    background-image: url('../img/optimized/home-factory-distribution-5aa58f05aa.webp');
     background-position: 78% center;
 }
 
 .home-appointment-photo {
-    background-image: url('../img/home-industrial-planning.webp');
+    background-image: url('../img/optimized/home-industrial-planning-0a08d921e3.webp');
     background-position: right center;
 }
 
