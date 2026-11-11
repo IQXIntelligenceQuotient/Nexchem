@@ -183,6 +183,15 @@
 
         }
 
+        // Slick preloads through a separate Image object, which cannot read picture sources.
+        // Select the mobile source before initialising so it never preloads the desktop variant.
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            $('#main-slider img[data-mobile-src]').each(function () {
+                $(this).attr('data-lazy', $(this).attr('data-mobile-src'))
+                    .removeAttr('data-srcset data-sizes');
+            });
+        }
+
         startCarousel('#main-slider', {
             lazyLoad: 'ondemand',
             autoplaySpeed: 2500,

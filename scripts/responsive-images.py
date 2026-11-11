@@ -33,9 +33,19 @@ targets = {
 }
 for page in root.glob('*.html'):
     text = page.read_text(encoding='utf-8')
+    text = re.sub(r'<picture data-mobile-image>\s*<source[^>]*>(<img\b[^>]*>)</picture>', r'\1', text)
     def update(match):
         tag = match[0]
         alt = re.search(r'alt="([^"]*)"', tag)
+        mobile_original = None
+        if page.name == 'index.html':
+            if alt and alt[1] == 'Illustration of industrial lubricant drums':
+                mobile_original = 'assets/img/hero-industrial-lubricant-drums.webp'
+            elif 'about-bg-1' in tag:
+                mobile_original = 'assets/img/about-bg-1.png'
+        if mobile_original:
+            mobile, _ = variant(mobile_original, 420, 55)
+            return '<picture data-mobile-image><source media="(max-width: 767px)" srcset="' + mobile + '">' + tag + '</picture>'
         if not alt or alt[1] not in targets:
             return tag
         original, widths, sizes = targets[alt[1]]
@@ -43,13 +53,24 @@ for page in root.glob('*.html'):
             return tag
         images = [variant(original, w, 60 if 'dl-slider' in original else 70) for w in widths]
         lazy = 'data-lazy=' in tag
-        tag = re.sub(r'\s(?:data-srcset|srcset|data-sizes|sizes)="[^"]*"', '', tag)
+        tag = re.sub(r'\s(?:data-srcset|srcset|data-sizes|sizes|data-mobile-src)="[^"]*"', '', tag)
         attr = 'data-lazy' if lazy else 'src'
         tag = re.sub(r'(?<![\w-])' + attr + r'="[^"]*"', attr + '="' + images[0][0] + '"', tag)
         srcset = ', '.join(f'{path} {width}w' for path, width in images)
         prefix = 'data-' if lazy else ''
-        return tag[:-1] + f' {prefix}srcset="{srcset}" {prefix}sizes="{sizes}">'
+        tag = tag[:-1] + f' {prefix}srcset="{srcset}" {prefix}sizes="{sizes}">'
+        if 'dl-slider' in original:
+            tag = tag[:-1] + f' data-mobile-src="{images[0][0]}">'
+            return '<picture data-mobile-image><source media="(max-width: 767px)" srcset="' + images[0][0] + '">' + tag + '</picture>'
+        return tag
     updated = re.sub(r'<img\b[^>]*>', update, text)
+    if page.name == 'index.html':
+        mobile, _ = variant('assets/img/hero-industrial-lubricant-drums.webp', 420, 55)
+        # Preload the matching source only: avoid downloading both mobile and desktop hero files.
+        updated = re.sub(r'[ \t]*<link rel="preload"[^>]*as="image"[^>]*>', '', updated)
+        desktop = manifest['assets/img/hero-industrial-lubricant-drums.webp']
+        preload = f'<link rel="preload" as="image" href="{mobile}" media="(max-width: 767px)" fetchpriority="high">\n<link rel="preload" as="image" href="{desktop}" media="(min-width: 768px)" fetchpriority="high">'
+        updated = updated.replace('</head>', preload + '\n</head>')
     if updated != text:
         page.write_text(updated, encoding='utf-8')
 print('Generated responsive slider, thumbnail and logo WebP variants.')

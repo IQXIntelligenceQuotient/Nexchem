@@ -62,3 +62,9 @@ Responsive WebP variants now serve the two later hero slides, homepage product t
 At a 390px viewport and device pixel ratio 1, the six flagged images total 30,814 bytes (30.1 KiB), compared with 172.7 KiB reported by the supplied live audit, about 83% less. Slider 3 is 13,734 bytes; slider 4 is 10,628 bytes. Higher density or desktop browsers choose larger variants as appropriate. Browser checks at 390px and 1440px verified currentSrc selection, both slider images, no JavaScript errors and no horizontal overflow. The previous Lighthouse scores above were measured before this follow-up; new production scores are not yet measured.
 
 The reported bfcache failures explicitly come from Chrome flags/command-line configuration and are not actionable website fixes. Retest with a normal browser profile if checking back/forward caching.
+
+## Mobile high-density image follow-up
+
+The newer audit selected 900px slides on high-density mobile screens. Dedicated mobile picture sources now cap the two landscape slides at 480px. Slick's separate preload Image also receives the mobile source before initialisation, avoiding an extra desktop download. The first hero and About image have 420px mobile variants; desktop image sources remain available. Matching media-specific hero preloads prevent double downloads.
+
+Four mobile images: slider 3 13,734 bytes, first hero 16,464 bytes, slider 4 10,628 bytes, About 8,560 bytes. Total 49,386 bytes (48.2 KiB) versus the supplied 133.7 KiB audit. Browser checks at 390px and 1440px, DPR 2, verified mobile currentSrc selection, no desktop slide downloads on mobile, successful slider transitions, no JavaScript errors and no horizontal overflow. These bytes are measured locally, not a new live PageSpeed score. The reported 1,070ms TTFB requires host/CDN investigation after deployment; no speculative preload connections were added.
